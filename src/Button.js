@@ -134,9 +134,9 @@ var Component = React.createClass({
       }
     }
 
-    logo = <span style={[styles.logo, {padding}]}><span style={styles.logo_centering}><Icon type={this.props.logo} /></span></span>;
-    separator = <span style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>;
-    text = <span style={[styles.text, styles['text_display_' + display], {padding}]}>{this.props.text}</span>;
+    logo = <span key="button-logo" style={[styles.logo, {padding}]}><span style={styles.logo_centering}><Icon type={this.props.logo} /></span></span>;
+    separator = <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>;
+    text = <span key="button-text" style={[styles.text, styles['text_display_' + display], {padding}]}>{this.props.text}</span>;
 
     if (this.props['logo-side'] === 'right') {
       if (this.props.text) {

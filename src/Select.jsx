@@ -91,7 +91,8 @@ var Select = React.createClass({
   },
 
   render: function () {
-    var selectedOptions,
+    var props = this.props,
+        selectedOptions,
         selectedOption;
 
     selectedOptions = this.state.options.filter(function (option) {
@@ -102,8 +103,8 @@ var Select = React.createClass({
     return (
       <div style={styles.select_section}>
         <label style={styles.select_label}>
-          <Button text={selectedOption.get('text') || 'Select an option'} logo="FaAngleDown" logo-side="right" type="div" display="block" />
-          <select ref="select" style={styles.select} name={this.props.name} onChange={this.onChange}>
+          <Button text={selectedOption.get('text') || 'Select an option'} logo="FaAngleDown" logo-side="right" type="div" display="block" color={props.color} colorHover={props.colorHover} />
+          <select ref="select" style={styles.select} name={props.name} onChange={this.onChange}>
             {this.state.options.map(function (option) {
               return <option style={styles.select_option} value={option.get('value')} defaultValue={option.get('selected')}>{option.get('text')}</option>
             })}
