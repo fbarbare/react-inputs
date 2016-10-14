@@ -81,29 +81,33 @@ var Component = React.createClass({
   },
 
   render: function () {
-    var container,
+    var props = this.props,
+        container,
         attributes = this.getEvents(),
-        size = this.props.size || 'big',
-        type = this.props.type || 'div',
-        display = this.props.display || 'block',
-        color = colors[this.props.color || 'dark2'] || this.props.color,
-        colorHover = colors[this.props.colorHover || 'light1'] || this.props.colorHover,
+        size = props.size || 'big',
+        type = props.type || 'div',
+        display = props.display || 'block',
+        color = colors[props.color || 'dark2'] || props.color,
+        colorHover = colors[props.colorHover || 'light1'] || props.colorHover,
         colorStyle = {color: color, borderColor: color, ':hover': {color: colorHover, backgroundColor: color}},
         content = this.getContent(size, display, color, colorHover);
 
-    attributes.key = 'Button';
+    if (props.key) {
+      attributes.key = props.key;
+    }
+
     attributes.style = [styles.button, styles['button_size_' + size], styles['button_type_' + type], colorStyle];
 
-    if (this.props.href) {
-     attributes.to = this.props.href;
-     attributes.target = this.props.target;
+    if (props.href) {
+     attributes.to = props.href;
+     attributes.target = props.target;
 
       return (
         <Link {...attributes}>
           {content}
         </Link>
       )
-    } else if (this.props.type === 'button') {
+    } else if (props.type === 'button') {
       return (
         <button {...attributes}>
           {content}
