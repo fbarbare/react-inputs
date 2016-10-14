@@ -52,7 +52,7 @@ var Select = React.createClass({
     oldOptions = fromJS(oldOptions || []);
     newOptions = fromJS(newOptions || []);
 
-    if (!this.state || !newOptions.equals(oldOptions)) {
+    if (!this.state || (this.state && !this.state.options) || !newOptions.equals(oldOptions)) {
       var options = newOptions.map(function (option) {
         return Map({
           text: option.get('text'),
@@ -61,7 +61,7 @@ var Select = React.createClass({
         });
       });
 
-      this.setState({options});
+      this.setState({options: options});
     }
   },
 
@@ -75,7 +75,7 @@ var Select = React.createClass({
       });
     });
 
-    this.setState({options});
+    this.setState({options: options});
 
     if (typeof this.props.onChange === 'function') {
       this.props.onChange(value);
