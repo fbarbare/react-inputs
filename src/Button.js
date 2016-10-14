@@ -1,6 +1,7 @@
 var React = require('react');
 var Radium = require('radium');
 var Link = require('react-router').Link;
+var LinkRadium = Radium(Link);
 var PureMixin = require('react-pure-render/mixin');
 var Icons = require('react-icons/lib/fa');
 var colors = require('./stylesVariables').colors;
@@ -103,9 +104,9 @@ var Component = React.createClass({
      attributes.target = props.target;
 
       return (
-        <Link {...attributes}>
+        <LinkRadium {...attributes}>
           {content}
-        </Link>
+        </LinkRadium>
       )
     } else if (props.type === 'button') {
       return (
