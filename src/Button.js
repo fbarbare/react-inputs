@@ -93,7 +93,7 @@ var Component = React.createClass({
         content = this.getContent(size, display, color, colorHover);
 
     if (props.key) {
-      attributes.key = props.key;
+      attributes.key = props.keyName;
     }
 
     attributes.style = [styles.button, styles['button_size_' + size], styles['button_type_' + type], colorStyle];
