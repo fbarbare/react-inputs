@@ -92,7 +92,7 @@ var Component = React.createClass({
         colorStyle = {color: color, borderColor: color, ':hover': {color: colorHover, backgroundColor: color}},
         content = this.getContent(size, display, color, colorHover);
 
-    if (props.key) {
+    if (props.keyName) {
       attributes.key = props.keyName;
     }
 
