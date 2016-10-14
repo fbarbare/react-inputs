@@ -106,7 +106,7 @@ var Select = React.createClass({
           <Button text={selectedOption.get('text') || 'Select an option'} logo="FaAngleDown" logo-side="right" type="div" display="block" color={props.color} colorHover={props.colorHover} />
           <select ref="select" style={styles.select} name={props.name} onChange={this.onChange}>
             {this.state.options.map(function (option) {
-              return <option style={styles.select_option} value={option.get('value')} defaultValue={option.get('selected')}>{option.get('text')}</option>
+              return <option key={'select-' + props.name + '-' + option.get('value')} style={styles.select_option} value={option.get('value')} defaultValue={option.get('selected')}>{option.get('text')}</option>
             })}
           </select>
         </label>
