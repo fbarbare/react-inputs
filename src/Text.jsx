@@ -4,7 +4,7 @@ var PureMixin = require('react-pure-render/mixin');
 var colors = require('./stylesVariables').colors;
 
 var styles = {
-  input_text_input: {
+  input: {
     boxSizing: 'border-box',
     display: 'block',
     margin: '0',
@@ -16,16 +16,17 @@ var styles = {
     width: '100%',
     font: 'inherit',
     color: colors.dark2,
+    backgroundColor: 'inherit',
     outline: 'none'
   },
-  input_text_input_error: {
+  input_error: {
     borderColor: colors.danger
   },
-  input_text_input_valid: {
+  input_valid: {
     borderColor: colors.success
   },
 
-  input_text_errors: {
+  errors: {
     color: colors.danger
   }
 };
@@ -97,11 +98,11 @@ var Text = React.createClass({
     }
 
     return (
-      <div style={styles.input_text}>
+      <div>
         <label>
-          <input ref="input" type={props.type || 'text'} style={[styles.input_text_input, styles['input_text_input_' + statusClassName]]} name={props.name} onChange={this.validate} placeholder={props.placeholder || ''} autoComplete={props.autoComplete} required={props.required} defaultValue={props.defaultValue} />
+          <input ref="input" type={props.type || 'text'} style={[styles.input, styles['input_' + statusClassName]]} name={props.name} onChange={this.validate} placeholder={props.placeholder || ''} autoComplete={props.autoComplete} required={props.required} defaultValue={props.defaultValue} />
         </label>
-        <div style={styles.input_text_errors}>
+        <div style={styles.errors}>
           {!this.state.requireValid
             ? <div>This field is required</div>
             : null

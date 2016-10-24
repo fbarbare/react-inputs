@@ -65,7 +65,7 @@ var styles = {
   }
 };
 
-var Component = React.createClass({
+var Button = React.createClass({
   mixins: [PureMixin],
 
   getEvents: function () {
@@ -177,4 +177,4 @@ var Component = React.createClass({
   }
 });
 
-module.exports = Radium(Component);
+module.exports = Radium(Button);
