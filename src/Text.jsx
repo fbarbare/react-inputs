@@ -100,7 +100,7 @@ var Text = React.createClass({
     return (
       <div>
         <label>
-          <input ref="input" type={props.type || 'text'} style={[styles.input, styles['input_' + statusClassName]]} name={props.name} onChange={this.validate} placeholder={props.placeholder || ''} autoComplete={props.autoComplete} required={props.required} defaultValue={props.defaultValue} />
+          <input ref="input" type={props.type || 'text'} style={[styles.input, styles['input_' + statusClassName]]} name={props.name} onChange={this.validate} placeholder={props.placeholder || ''} defaultValue={props.defaultValue} autoComplete={props.autoComplete} autoFocus={props.autoFocus} pattern={props.pattern} required={props.required} />
         </label>
         <div style={styles.errors}>
           {!this.state.requireValid
