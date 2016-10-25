@@ -34,6 +34,10 @@ var styles = {
     padding: '5px 0'
   },
 
+  button_display_block: {
+    width: '100%'
+  },
+
   logo: {
     display: 'table-cell',
     verticalAlign: 'middle',
@@ -58,7 +62,9 @@ var styles = {
     wordBreak: 'break-all'
   },
   text_display_block: {
-    width: '100%'
+    display: 'block',
+    width: '100%',
+    textAlign: 'center'
   },
   text_display_inline: {
     width: 'initial'
@@ -81,6 +87,13 @@ var Button = React.createClass({
     return events;
   },
 
+  getColor: function () {
+    return this.props.color || '#000';
+  },
+  getColorHover: function () {
+    return this.props.colorHover || '#fff';
+  },
+
   render: function () {
     var props = this.props,
         container,
@@ -88,8 +101,8 @@ var Button = React.createClass({
         size = props.size || 'big',
         type = props.type || 'div',
         display = props.display || 'block',
-        color = colors[props.color || 'dark2'] || props.color,
-        colorHover = colors[props.colorHover || 'light1'] || props.colorHover,
+        color = this.getColor(),
+        colorHover = this.getColorHover(),
         colorStyle = {color: color, borderColor: color, ':hover': {color: colorHover, backgroundColor: color}},
         content = this.getContent(size, display, color, colorHover);
 
@@ -97,7 +110,7 @@ var Button = React.createClass({
       attributes.key = props.keyName;
     }
 
-    attributes.style = [styles.button, styles['button_size_' + size], styles['button_type_' + type], colorStyle];
+    attributes.style = [styles.button, styles['button_size_' + size], styles['button_type_' + type], styles['button_display_' + display], colorStyle];
 
     if (props.href) {
      attributes.to = props.href;
@@ -126,22 +139,10 @@ var Button = React.createClass({
   getContent: function (size, display, color, colorHover) {
     var padding = size === 'standard' ? '0 10px' : '0 20px';
     var elements = [];
-    var Icon = 'span';
-    var logo;
-    var text;
-    var separator;
-
-    if (this.props.logo) {
-      if (Icons[this.props.logo]) {
-        Icon = Icons[this.props.logo];
-      } else {
-        console.error('The logo "' + this.props.logo + '" does not exist');
-      }
-    }
-
-    logo = <span key="button-logo" style={[styles.logo, {padding}]}><span style={styles.logo_centering}><Icon type={this.props.logo} /></span></span>;
-    separator = <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>;
-    text = <span key="button-text" style={[styles.text, styles['text_display_' + display], {padding}]}>{this.props.text}</span>;
+    var Icon = this.props.logo ? Icons[this.props.logo] : 'span';
+    var logo = <span key="button-logo" style={[styles.logo, {padding}]}><span style={styles.logo_centering}><Icon type={this.props.logo} /></span></span>;
+    var text = <span key="button-text" style={[styles.text, {padding}, styles['text_display_' + display]]}>{this.props.text}</span>;
+    var separator = <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>;
 
     if (this.props['logo-side'] === 'right') {
       if (this.props.text) {

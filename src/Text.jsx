@@ -1,9 +1,16 @@
 var React = require('react');
 var Radium = require('radium');
 var PureMixin = require('react-pure-render/mixin');
+var Color = require('color');
+var Icons = require('react-icons/lib/fa');
 var colors = require('./stylesVariables').colors;
 
 var styles = {
+  label: {
+    position: 'relative',
+    display: 'inline-block',
+    width: '100%'
+  },
   input: {
     boxSizing: 'border-box',
     display: 'block',
@@ -15,7 +22,6 @@ var styles = {
     borderColor: colors.dark2,
     width: '100%',
     font: 'inherit',
-    color: colors.dark2,
     backgroundColor: 'inherit',
     outline: 'none'
   },
@@ -24,6 +30,19 @@ var styles = {
   },
   input_valid: {
     borderColor: colors.success
+  },
+  input_icon: {
+    paddingLeft: '25px'
+  },
+
+  icon: {
+    position: 'absolute',
+    top: '0',
+    bottom: '0',
+    left: '0',
+    display: 'inline-block',
+    textAlign: 'left',
+    fontSize: '16px'
   },
 
   errors: {
@@ -62,18 +81,47 @@ var Text = React.createClass({
     return isValid;
   },
 
+  getColor: function () {
+    return this.props.color || 'inherit';
+  },
+
   getValue: function () {
     return this.refs.input.value;
   },
 
   render: function () {
     var props = this.props,
-        isValid = this.state.isValid;
+        color = this.getColor(),
+        isValid = this.state.isValid,
+        Icon = props.logo ? Icons[props.logo] : null;
 
     return (
       <div>
-        <label>
-          <input ref="input" type={props.type || 'text'} style={[styles.input, isValid ? styles['input_valid'] : styles['input_error']]} name={props.name} onChange={this.validate} placeholder={props.placeholder || ''} defaultValue={props.defaultValue} autoComplete={props.autoComplete} autoFocus={props.autoFocus} pattern={props.pattern} required={props.required} />
+        <label style={styles.label}>
+          <input
+            ref="input"
+            type={props.type || 'text'}
+            style={[
+              styles.input,
+              {color},
+              isValid ? styles['input_valid'] : styles['input_error'],
+              Icon ? styles.input_icon : null
+            ]}
+            name={props.name}
+            onChange={this.validate}
+            placeholder={props.placeholder}
+            defaultValue={props.defaultValue}
+            autoComplete={props.autoComplete}
+            autoFocus={props.autoFocus}
+            pattern={props.pattern}
+            required={props.required}
+          />
+          {Icon
+            ? <div style={[styles.icon, {color}]}>
+                <Icon />
+              </div>
+            : null
+          }
         </label>
         <div style={styles.errors}>
           {props.errorMessage && !isValid
