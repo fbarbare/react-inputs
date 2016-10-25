@@ -57,6 +57,7 @@ var styles = {
   },
 
   text: {
+    boxSizing: 'border-box',
     display: 'table-cell',
     textAlign: 'left',
     wordBreak: 'break-all'
