@@ -43,44 +43,23 @@ var Text = React.createClass({
   },
 
   validate: function () {
-    var requireValid = this.isRequireValid();
-    var valueValid = this.isValueValid();
-    var state = this.state || {};
+    var isValid = this.isValid();
 
-    if (requireValid !== state.requireValid || valueValid !== state.valueValid) {
-      this.setState({requireValid, valueValid});
+    if (!this.state || isValid !== this.state.isValid) {
+      this.setState({isValid});
     }
-  },
-
-  isRequireValid: function () {
-    var isValid = true;
-
-    if (this.props.required) {
-      if (!this.refs.input || !this.refs.input.value) {
-        isValid = false;
-      }
-    }
-
-    return isValid;
-  },
-
-  isValueValid: function () {
-    var isValid = true;
-
-    if (this.props.pattern) {
-      var regExp = new RegExp('^' + this.props.pattern + '$');
-      var value = this.refs.input ? this.refs.input.value : '';
-
-      if (value && !regExp.test(value)) {
-        isValid = false;
-      }
-    }
-
-    return isValid;
   },
 
   isValid: function () {
-    return this.state.requireValid && this.state.valueValid;
+    var isValid = true;
+
+    if (this.refs.input) {
+      isValid = this.refs.input.checkValidity();
+    } else if (this.props.required) {
+      isValid = false;
+    }
+
+    return isValid;
   },
 
   getValue: function () {
@@ -89,26 +68,16 @@ var Text = React.createClass({
 
   render: function () {
     var props = this.props,
-        statusClassName = '';
-
-    if (this.isValid()) {
-      statusClassName = 'valid';
-    } else {
-      statusClassName = 'error';
-    }
+        isValid = this.state.isValid;
 
     return (
       <div>
         <label>
-          <input ref="input" type={props.type || 'text'} style={[styles.input, styles['input_' + statusClassName]]} name={props.name} onChange={this.validate} placeholder={props.placeholder || ''} defaultValue={props.defaultValue} autoComplete={props.autoComplete} autoFocus={props.autoFocus} pattern={props.pattern} required={props.required} />
+          <input ref="input" type={props.type || 'text'} style={[styles.input, isValid ? styles['input_valid'] : styles['input_error']]} name={props.name} onChange={this.validate} placeholder={props.placeholder || ''} defaultValue={props.defaultValue} autoComplete={props.autoComplete} autoFocus={props.autoFocus} pattern={props.pattern} required={props.required} />
         </label>
         <div style={styles.errors}>
-          {!this.state.requireValid
-            ? <div>This field is required</div>
-            : null
-          }
-          {!this.state.valueValid
-            ? <div>{props.errorMessage || 'The value entered is not valid'}</div>
+          {props.errorMessage && !isValid
+            ? <div>{props.errorMessage}</div>
             : null
           }
         </div>
