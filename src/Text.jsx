@@ -56,7 +56,6 @@ var Text = React.createClass({
   componentWillMount: function () {
     this.validate();
   },
-
   componentDidMount: function () {
     this.validate();
   },
@@ -68,7 +67,6 @@ var Text = React.createClass({
       this.setState({isValid});
     }
   },
-
   isValid: function () {
     var isValid = true;
 
@@ -80,13 +78,12 @@ var Text = React.createClass({
 
     return isValid;
   },
+  getValue: function () {
+    return this.refs.input.value;
+  },
 
   getColor: function () {
     return this.props.color || 'inherit';
-  },
-
-  getValue: function () {
-    return this.refs.input.value;
   },
 
   render: function () {

@@ -38,10 +38,22 @@ var styles = {
     width: '100%'
   },
 
+  content: {
+    display: 'table',
+    width: '100%'
+  },
+
   logo: {
+    boxSizing: 'border-box',
     display: 'table-cell',
     verticalAlign: 'middle',
     color: 'inherit'
+  },
+  logo_size_standard: {
+    padding: '0 10px'
+  },
+  logo_size_big: {
+    padding: '0 20px'
   },
   logo_centering: {
     display: 'block',
@@ -59,35 +71,34 @@ var styles = {
   text: {
     boxSizing: 'border-box',
     display: 'table-cell',
-    textAlign: 'left',
+    textAlign: 'center',
     wordBreak: 'break-all'
   },
+  text_size_standard: {
+    padding: '0 10px'
+  },
+  text_size_big: {
+    padding: '0 20px'
+  },
   text_display_block: {
-    display: 'block',
-    width: '100%',
-    textAlign: 'center'
+    width: '100%'
   },
   text_display_inline: {
-    width: 'initial'
   }
 };
 
 var Button = React.createClass({
   mixins: [PureMixin],
 
-  getEvents: function () {
-    var eventNames = ['onClick'],
-        events = {};
-
-    for (var i = eventNames.length - 1; i >= 0; i--) {
-      if (this.props.hasOwnProperty(eventNames[i])) {
-        events[eventNames[i]] = this.props[eventNames[i]];
-      }
-    }
-
-    return events;
+  getType: function () {
+    return this.props.type || 'div';
   },
-
+  getSize: function () {
+    return this.props.size || 'big';
+  },
+  getDisplay: function () {
+    return this.props.display || 'block';
+  },
   getColor: function () {
     return this.props.color || '#000';
   },
@@ -97,21 +108,35 @@ var Button = React.createClass({
 
   render: function () {
     var props = this.props,
-        container,
-        attributes = this.getEvents(),
-        size = props.size || 'big',
-        type = props.type || 'div',
-        display = props.display || 'block',
+        attributes = {},
+        type = this.getType(),
+        size = this.getSize(),
+        display = this.getDisplay(),
         color = this.getColor(),
-        colorHover = this.getColorHover(),
-        colorStyle = {color: color, borderColor: color, ':hover': {color: colorHover, backgroundColor: color}},
-        content = this.getContent(size, display, color, colorHover);
+        colorHover = this.getColorHover();
+
+    if (props.onClick) {
+      attributes.onClick = props.onClick;
+    }
 
     if (props.keyName) {
       attributes.key = props.keyName;
     }
 
-    attributes.style = [styles.button, styles['button_size_' + size], styles['button_type_' + type], styles['button_display_' + display], colorStyle];
+    attributes.style = [
+      styles.button,
+      styles['button_type_' + type],
+      styles['button_size_' + size],
+      styles['button_display_' + display],
+      {
+        color: color,
+        borderColor: color,
+        ':hover': {
+          color: colorHover,
+          backgroundColor: color
+        }
+      }
+    ];
 
     if (props.href) {
      attributes.to = props.href;
@@ -119,61 +144,72 @@ var Button = React.createClass({
 
       return (
         <LinkRadium {...attributes}>
-          {content}
+          {this.getContent()}
         </LinkRadium>
       )
     } else if (props.type === 'button') {
       return (
         <button {...attributes}>
-          {content}
+          {this.getContent()}
         </button>
       )
     } else {
       return (
         <div {...attributes}>
-          {content}
+          {this.getContent()}
         </div>
       )
     }
   },
 
   getContent: function (size, display, color, colorHover) {
-    var padding = size === 'standard' ? '0 10px' : '0 20px';
-    var elements = [];
-    var Icon = this.props.logo ? Icons[this.props.logo] : 'span';
-    var logo = <span key="button-logo" style={[styles.logo, {padding}]}><span style={styles.logo_centering}><Icon type={this.props.logo} /></span></span>;
-    var text = <span key="button-text" style={[styles.text, {padding}, styles['text_display_' + display]]}>{this.props.text}</span>;
-    var separator = <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>;
-
-    if (this.props['logo-side'] === 'right') {
-      if (this.props.text) {
-        elements.push(text);
-      }
-
-      if (this.props.logo && this.props.text) {
-        elements.push(separator);
-      }
-
-      if (this.props.logo) {
-        elements.push(logo);
-      }
-    } else {
-      if (this.props.logo) {
-        elements.push(logo);
-      }
-
-      if (this.props.logo && this.props.text) {
-        elements.push(separator);
-      }
-
-      if (this.props.text) {
-        elements.push(text);
-      }
-    }
+    var props = this.props,
+        type = this.getType(),
+        size = this.getSize(),
+        display = this.getDisplay(),
+        color = this.getColor(),
+        colorHover = this.getColorHover();
 
     return (
-      <div>
-        {elements.map(function (element) { return element; })}
+      <div style={styles.content}>
+        {(function () {
+          if (props.logo) {
+            let Icon = Icons[props.logo] || 'span';
+
+            return (
+              <span key="button-logo" style={[styles.logo, styles['logo_size_' + size]]}>
+                <span style={styles.logo_centering}>
+                  <Icon />
+                </span>
+              </span>
+            );
+          }
+        })()}
+        {props.logo && props.text
+          ? <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>
+          : null
+        }
+        {props.text
+          ? <span key="button-text" style={[styles.text, styles['text_size_' + size], styles['text_display_' + display]]}>{props.text}</span>
+          : null
+        }
+        {props.logoRight && props.text
+          ? <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>
+          : null
+        }
+        {(function () {
+          if (props.logoRight) {
+            let Icon = Icons[props.logoRight] || 'span';
+
+            return (
+              <span key="button-logo" style={[styles.logo, styles['logo_size_' + size]]}>
+                <span style={styles.logo_centering}>
+                  <Icon />
+                </span>
+              </span>
+            );
+          }
+        })()}
       </div>
     );
   }

@@ -76,8 +76,14 @@ var File = React.createClass({
     return value;
   },
 
+  getColor: function () {
+    return this.props.color || '#000';
+  },
+
   render: function () {
     var props = this.props,
+        color = this.getColor(),
+        isValid = this.state.isValid,
         text = 'Choose a file...',
         focusStyle = this.state.isFocus ? styles.focus : null;
 
@@ -92,15 +98,27 @@ var File = React.createClass({
     return (
       <div>
         <label style={focusStyle}>
-          <input key="file" ref="file" style={styles.file} type="file" name={props.name} accept={props.accept} onChange={this.onChange} required={props.required} multiple={props.multiple} onFocus={this.onFocus} onBlur={this.onBlur}/>
-          <Button text={text} color={this.state.isValid ? 'success' : 'danger'} logo="FaUpload" display="block" type="div" />
+          <input
+            key="file"
+            ref="file"
+            type="file"
+            style={styles.file}
+            name={props.name}
+            accept={props.accept}
+            multiple={props.multiple}
+            required={props.required}
+            onChange={this.onChange}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+          />
+          <Button
+            type="div"
+            display={props.display || 'block'}
+            text={text}
+            logo="FaUpload"
+            color={isValid ? colors.success : colors.danger}
+          />
         </label>
-        <div style={styles.input_file_errors}>
-          {!this.isRequireValid()
-            ? <div>This field is required</div>
-            : null
-          }
-        </div>
       </div>
     )
   }
