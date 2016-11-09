@@ -1,11 +1,8 @@
 var React = require('react');
 var Radium = require('radium');
-var Map = require('immutable').Map;
-var List = require('immutable').List;
-var fromJS = require('immutable').fromJS;
+var {Map, fromJS} = require('immutable');
 var PureMixin = require('react-pure-render/mixin');
 var Button = require('./Button');
-var colors = require('./stylesVariables').colors;
 
 var styles = {
   select_section: {
@@ -110,9 +107,9 @@ var Select = React.createClass({
             text={selectedOption.get('text') || props.defaultText || 'Select an option'}
             color={props.color}
           />
-          <select ref="select" style={styles.select} name={props.name} onChange={this.onChange}>
+          <select ref="select" style={styles.select} name={props.name} defaultValue={selectedOption.get('value')} onChange={this.onChange}>
             {this.state.options.map(function (option) {
-              return <option key={'select-' + props.name + '-' + option.get('value')} style={styles.select_option} value={option.get('value')} defaultValue={option.get('selected')}>{option.get('text')}</option>
+              return <option key={'select-' + props.name + '-' + option.get('value')} style={styles.select_option} value={option.get('value')}>{option.get('text')}</option>
             })}
           </select>
         </label>

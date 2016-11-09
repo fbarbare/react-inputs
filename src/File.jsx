@@ -1,8 +1,5 @@
 var React = require('react');
 var Radium = require('radium');
-var Map = require('immutable').Map;
-var List = require('immutable').List;
-var fromJS = require('immutable').fromJS;
 var PureMixin = require('react-pure-render/mixin');
 var Button = require('./Button');
 var colors = require('./stylesVariables').colors;
@@ -76,13 +73,8 @@ var File = React.createClass({
     return value;
   },
 
-  getColor: function () {
-    return this.props.color || '#000';
-  },
-
   render: function () {
     var props = this.props,
-        color = this.getColor(),
         isValid = this.state.isValid,
         text = 'Choose a file...',
         focusStyle = this.state.isFocus ? styles.focus : null;

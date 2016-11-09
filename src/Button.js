@@ -4,7 +4,6 @@ var Link = require('react-router').Link;
 var LinkRadium = Radium(Link);
 var PureMixin = require('react-pure-render/mixin');
 var Icons = require('react-icons/lib/fa');
-var colors = require('./stylesVariables').colors;
 
 var styles = {
   button: {
@@ -162,12 +161,10 @@ var Button = React.createClass({
     }
   },
 
-  getContent: function (size, display, color, colorHover) {
+  getContent: function () {
     var props = this.props,
-        type = this.getType(),
         size = this.getSize(),
         display = this.getDisplay(),
-        color = this.getColor(),
         colorHover = this.getColorHover();
 
     return (
@@ -177,7 +174,7 @@ var Button = React.createClass({
             let Icon = Icons[props.logo] || 'span';
 
             return (
-              <span key="button-logo" style={[styles.logo, styles['logo_size_' + size]]}>
+              <span key="button-logo-1" style={[styles.logo, styles['logo_size_' + size]]}>
                 <span style={styles.logo_centering}>
                   <Icon />
                 </span>
@@ -186,7 +183,7 @@ var Button = React.createClass({
           }
         })()}
         {props.logo && props.text
-          ? <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>
+          ? <span key="button-separator-1" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>
           : null
         }
         {props.text
@@ -194,7 +191,7 @@ var Button = React.createClass({
           : null
         }
         {props.logoRight && props.text
-          ? <span key="button-separator" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>
+          ? <span key="button-separator-2" style={[styles.separator, {':hover': {borderColor: colorHover}}]}></span>
           : null
         }
         {(function () {
@@ -202,7 +199,7 @@ var Button = React.createClass({
             let Icon = Icons[props.logoRight] || 'span';
 
             return (
-              <span key="button-logo" style={[styles.logo, styles['logo_size_' + size]]}>
+              <span key="button-logo-2" style={[styles.logo, styles['logo_size_' + size]]}>
                 <span style={styles.logo_centering}>
                   <Icon />
                 </span>

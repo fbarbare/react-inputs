@@ -57,10 +57,12 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+build
 
-# Dependency directories
+# Dependencies
 node_modules
 jspm_packages
+.env
 
 # Optional npm cache directory
 .npm
