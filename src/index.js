@@ -1,10 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Button, File, Select, Text, Textarea, Toggle} from './inputs';
+import {Button, File, Select, Text, Textarea, Toggle, Color} from './inputs';
 
 ReactDOM.render(
   <div>
     <h1>Examples of inputs</h1>
+    <div>
+      <h2>Input color</h2>
+      <div>
+        <Color name="color" display="inline" color="#555" defaultValue="#912345" autoComplete />
+        <Color name="color2" display="block" color="green" defaultValue="#912345" autoComplete />
+      </div>
+    </div>
     <div>
       <h2>Buttons</h2>
       <div>

@@ -1,133 +1,81 @@
 var React = require('react');
 var Radium = require('radium');
 var PureMixin = require('react-pure-render/mixin');
-var Icons = require('react-icons/lib/fa');
-var colors = require('./stylesVariables').colors;
+// var Icons = require('react-icons/lib/fa');
 
 var styles = {
   label: {
-    position: 'relative',
+    boxSizing: 'border-box',
     display: 'inline-block',
-    width: '100%'
+    margin: 0,
+    borderRadius: '2px',
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    padding: 0,
+    cursor: 'pointer'
   },
+  label_display_inline: {
+    padding: '2px 4px',
+    width: '40px',
+    height: '30px'
+  },
+  label_display_block: {
+    padding: '5px 7px',
+    width: '100%',
+    height: '40px'
+  },
+
   input: {
     boxSizing: 'border-box',
-    display: 'block',
-    margin: '0',
-    borderTop: '0',
-    borderLeft: '0',
-    borderRight: '0',
-    borderBottom: 'solid 1px',
-    borderColor: colors.dark2,
+    margin: 0,
+    border: 0,
+    padding: 0,
     width: '100%',
-    font: 'inherit',
-    backgroundColor: 'inherit',
-    outline: 'none'
-  },
-  input_error: {
-    borderColor: colors.danger
-  },
-  input_valid: {
-    borderColor: colors.success
-  },
-  input_icon: {
-    paddingLeft: '25px'
-  },
-
-  icon: {
-    position: 'absolute',
-    top: '0',
-    bottom: '0',
-    left: '0',
-    display: 'inline-block',
-    textAlign: 'left',
-    fontSize: '16px'
-  },
-
-  errors: {
-    color: colors.danger
+    height: '100%',
+    backgroundColor: 'transparent',
+    cursor: 'pointer'
   }
 };
 
-var Text = React.createClass({
+var Color = React.createClass({
   mixins: [PureMixin],
 
-  componentWillMount: function () {
-    this.validate();
+  getDisplay: function () {
+    return this.props.display || 'block';
   },
-  componentDidMount: function () {
-    this.validate();
+  getColor: function () {
+    return this.props.color || '#000';
   },
 
-  validate: function () {
-    var isValid = this.isValid();
-
-    if (!this.state || isValid !== this.state.isValid) {
-      this.setState({isValid});
-    }
-  },
-  isValid: function () {
-    var isValid = true;
-
-    if (this.refs.input) {
-      isValid = this.refs.input.checkValidity();
-    } else if (this.props.required) {
-      isValid = false;
-    }
-
-    return isValid;
-  },
   getValue: function () {
     return this.refs.input.value;
   },
 
-  getColor: function () {
-    return this.props.color || 'inherit';
-  },
-
   render: function () {
     var props = this.props,
-        color = this.getColor(),
-        isValid = this.state.isValid,
-        Icon = props.logo ? Icons[props.logo] : null;
+        display = this.getDisplay(),
+        color = this.getColor();
 
     return (
       <div>
-        <label style={styles.label}>
+        <label style={[
+          styles.label,
+          {borderColor: color},
+          styles['label_display_' + display]
+        ]}>
           <input
             ref="input"
-            type={props.type || 'text'}
-            style={[
-              styles.input,
-              {color},
-              isValid ? styles['input_valid'] : styles['input_error'],
-              Icon ? styles.input_icon : null
-            ]}
+            type="color"
             name={props.name}
-            onChange={this.validate}
-            placeholder={props.placeholder}
+            style={styles.input}
             defaultValue={props.defaultValue}
             autoComplete={props.autoComplete}
             autoFocus={props.autoFocus}
-            pattern={props.pattern}
-            required={props.required}
           />
-          {Icon
-            ? <div style={[styles.icon, {color}]}>
-                <Icon />
-              </div>
-            : null
-          }
         </label>
-        <div style={styles.errors}>
-          {props.errorMessage && !isValid
-            ? <div>{props.errorMessage}</div>
-            : null
-          }
-        </div>
       </div>
     )
   }
 });
 
-module.exports = Radium(Text);
+module.exports = Radium(Color);
